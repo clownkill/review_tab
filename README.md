@@ -1,6 +1,6 @@
 # review_tab
  
-Обучаемые нейросетью [Dialogflow](https://dialogflow.cloud.google.com/) боты для Telegram и ВКонтакте
+Обучаемые нейросетью [Dialogflow](https://dialogflow.cloud.google.com/) боты для Telegram (@review_tab_bot) и [ВКонтакте](https://vk.com/club212634810)
 для онлайн-издательства "Игра глаголов".
 
 ## Как установить
