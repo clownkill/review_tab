@@ -1,15 +1,25 @@
 import os
 import random
+import uuid
 
 import vk_api as vk
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
 
+from bot import detect_intent_texts
+
 
 def echo(event, vk_api):
+    text = detect_intent_texts(
+        'quantum-ally-327819',
+        str(uuid.uuid4()),
+        event.text,
+        language_code='ru'
+    )
+    
     vk_api.messages.send(
         user_id=event.user_id,
-        message=event.text,
+        message=text,
         random_id=random.randint(1, 1000)
     )
 
