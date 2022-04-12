@@ -25,7 +25,9 @@ def detect_intent_texts(project_id, session_id, text, language_code):
         request={"session": session, "query_input": query_input}
     )
 
-    return response.query_result.fulfillment_text
+    if not response.query_result.intent.is_fallback:
+        return response.query_result.fulfillment_text
+    return 'Не совсем понимаю о чем ты'
 
 
 def start(update, context):
@@ -40,7 +42,7 @@ def help_command(update, context):
     update.message.reply_text('Help!')
 
 
-def echo(update, context):
+def send_message(update, context):
     text = detect_intent_texts(
         'quantum-ally-327819',
         update.effective_chat.id,
@@ -64,7 +66,7 @@ def main() -> None:
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("help", help_command))
 
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_message))
 
     updater.start_polling()
 

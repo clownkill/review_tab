@@ -24,7 +24,7 @@ def detect_intent_texts(project_id, session_id, text, language_code):
         return response.query_result.fulfillment_text
 
 
-def echo(event, vk_api):
+def send_message(event, vk_api):
     text = detect_intent_texts(
         'quantum-ally-327819',
         str(uuid.uuid4()),
@@ -47,7 +47,7 @@ def vk_bot(vk_token):
 
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            echo(event, vk_api)
+            send_message(event, vk_api)
 
 
 def main():
