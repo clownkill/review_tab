@@ -42,8 +42,7 @@ def vk_bot(project_id, vk_token, logger):
             try:
                 send_message(project_id, event, vk_api)
             except Exception as err:
-                logger.error('Бот VK упал с ошибкой:')
-                logger.error(err, exc_info=True)
+                logger.exception('Бот VK упал с ошибкой:')
 
 
 def main():
