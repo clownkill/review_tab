@@ -21,6 +21,7 @@ pip install -r requrirements
 TELEGRAM_TOKEN=[Токен telegram-бота]
 VK_TOKEN=[Токен группы ВКонтакте]
 GOOGLE_APPLICATION_CREDENTIALS=[путь к json-файлу с credentials-данными от DialogFlow]
+GOOGLE_PROJECT_ID=[ID проекта на DialogFlow]
 TG_LOG_TOKEN=[Токен telegram-бота для получения логов]
 TG_LOG_CHAT_ID=[ID telegram-чата для получения логов]
 ```

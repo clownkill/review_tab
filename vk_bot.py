@@ -16,9 +16,9 @@ from logger import TelegramLogsHandler
 logger = logging.getLogger(__name__)
 
 
-def send_message(event, vk_api):
+def send_message(project_id, event, vk_api):
     text = detect_intent_texts(
-        'quantum-ally-327819',
+        project_id,
         str(uuid.uuid4()),
         event.text,
         language_code='ru'
@@ -32,7 +32,7 @@ def send_message(event, vk_api):
     )
 
 
-def vk_bot(vk_token, logger):
+def vk_bot(project_id, vk_token, logger):
     vk_session = vk.VkApi(token=vk_token)
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
@@ -40,7 +40,7 @@ def vk_bot(vk_token, logger):
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
             try:
-                send_message(event, vk_api)
+                send_message(project_id, event, vk_api)
             except Exception as err:
                 logger.error('Бот VK упал с ошибкой:')
                 logger.error(err, exc_info=True)
@@ -51,6 +51,7 @@ def main():
     vk_token = os.getenv('VK_TOKEN')
     tg_log_token = os.getenv('TG_LOG_TOKEN')
     chat_id = os.getenv('TG_LOG_CHAT_ID')
+    project_id = os.getenv('GOOGLE_PROJECT_ID')
 
     log_bot = telegram.Bot(token=tg_log_token)
 
@@ -58,7 +59,7 @@ def main():
     logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
 
     logger.info('Бот VK запущен')
-    vk_bot(vk_token, logger)
+    vk_bot(project_id, vk_token, logger)
 
 
 if __name__ == '__main__':

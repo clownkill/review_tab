@@ -1,4 +1,5 @@
 import json
+import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
@@ -34,7 +35,7 @@ def load_training_phrases(training_file):
 
 def main():
     load_dotenv()
-    project_id = 'quantum-ally-327819'
+    project_id = os.getenv('GOOGLE_PROJECT_ID')
     training_data = load_training_phrases('phrases.json')
 
     display_names = list(training_data.keys())

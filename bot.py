@@ -18,11 +18,8 @@ def error(update, context):
 
 def detect_intent_texts(project_id, session_id, text, language_code):
     session_client = dialogflow.SessionsClient()
-
     session = session_client.session_path(project_id, session_id)
-
     text_input = dialogflow.TextInput(text=text, language_code=language_code)
-
     query_input = dialogflow.QueryInput(text=text_input)
 
     response = session_client.detect_intent(
@@ -42,8 +39,9 @@ def start(update, context):
 
 
 def send_message(update, context):
+    project_id = os.getenv('GOOGLE_PROJECT_ID')
     text = detect_intent_texts(
-        'quantum-ally-327819',
+        project_id,
         update.effective_chat.id,
         update.message.text,
         language_code='ru'
