@@ -38,8 +38,7 @@ def main():
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     training_data = load_training_phrases('phrases.json')
 
-    for display_name in training_data.keys():
-        training_intent = training_data[display_name]
+    for display_name, training_intent in training_data.items():
         training_phrases_parts = training_intent['questions']
         message_texts = [training_intent['answer']]
 
