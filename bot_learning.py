@@ -38,10 +38,10 @@ def main():
     project_id = os.getenv('GOOGLE_PROJECT_ID')
     training_data = load_training_phrases('phrases.json')
 
-    display_names = list(training_data.keys())
-    for display_name in display_names:
-        training_phrases_parts = training_data[display_name]['questions']
-        message_texts = [training_data[display_name]['answer']]
+    for display_name in training_data.keys():
+        training_intent = training_data[display_name]
+        training_phrases_parts = training_intent['questions']
+        message_texts = [training_intent['answer']]
 
         create_intent(project_id, display_name, training_phrases_parts, message_texts)
 
