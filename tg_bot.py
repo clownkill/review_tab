@@ -2,11 +2,11 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from google.cloud import dialogflow
 import telegram
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
+from dialogflow_detect_texts import detect_intent_texts
 from logger import TelegramLogsHandler
 
 logger = logging.getLogger(__name__)
@@ -14,20 +14,6 @@ logger = logging.getLogger(__name__)
 
 def error(update, context):
     logger.exception('У бота Telegram проблема')
-
-
-def detect_intent_texts(project_id, session_id, text, language_code):
-    session_client = dialogflow.SessionsClient()
-    session = session_client.session_path(project_id, session_id)
-    text_input = dialogflow.TextInput(text=text, language_code=language_code)
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-
-    if not response.query_result.intent.is_fallback:
-        return response.query_result.fulfillment_text
 
 
 def start(update, context):
