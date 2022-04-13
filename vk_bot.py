@@ -17,14 +17,17 @@ logger = logging.getLogger(__name__)
 
 
 def send_message(project_id, event, vk_api):
-    text = detect_intent_texts(
+    response = detect_intent_texts(
         project_id,
         str(uuid.uuid4()),
         event.text,
         language_code='ru'
     )
-    if not text:
+
+    if response.query_result.intent.is_fallback:
         return
+
+    text = response.query_result.fulfillment_text
     vk_api.messages.send(
         user_id=event.user_id,
         message=text,

@@ -26,12 +26,15 @@ def start(update, context):
 
 def send_message(update, context):
     project_id = os.getenv('GOOGLE_PROJECT_ID')
-    text = detect_intent_texts(
+
+    response = detect_intent_texts(
         project_id,
         update.effective_chat.id,
         update.message.text,
         language_code='ru'
     )
+    
+    text = response.query_result.fulfillment_text
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=text
