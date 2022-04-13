@@ -3,13 +3,17 @@ import os
 
 from dotenv import load_dotenv
 from google.cloud import dialogflow
+import telegram
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
+from logger import TelegramLogsHandler
+
 logger = logging.getLogger(__name__)
+
+
+def error(update, context):
+    logger.exception('У бота Telegram проблема')
 
 
 def detect_intent_texts(project_id, session_id, text, language_code):
@@ -37,10 +41,6 @@ def start(update, context):
     )
 
 
-def help_command(update, context):
-    update.message.reply_text('Help!')
-
-
 def send_message(update, context):
     text = detect_intent_texts(
         'quantum-ally-327819',
@@ -54,21 +54,27 @@ def send_message(update, context):
     )
 
 
-def main() -> None:
+def main():
     load_dotenv()
     telegram_token = os.getenv('TELEGRAM_TOKEN')
+    tg_log_token = os.getenv('TG_LOG_TOKEN')
+    chat_id = os.getenv('TG_LOG_CHAT_ID')
 
+    log_bot = telegram.Bot(token=tg_log_token)
+
+    logger.setLevel(logging.INFO)
+    logger.addHandler(TelegramLogsHandler(log_bot, chat_id))
+
+    logger.info('Бот Telegram запущен')
     updater = Updater(telegram_token)
 
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, send_message))
+    dispatcher.add_error_handler(error)
 
     updater.start_polling()
-
     updater.idle()
 
 
