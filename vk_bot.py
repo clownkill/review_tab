@@ -3,25 +3,10 @@ import random
 import uuid
 
 import vk_api as vk
-from google.cloud import dialogflow
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-
-def detect_intent_texts(project_id, session_id, text, language_code):
-    session_client = dialogflow.SessionsClient()
-
-    session = session_client.session_path(project_id, session_id)
-
-    text_input = dialogflow.TextInput(text=text, language_code=language_code)
-
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-    if not response.query_result.intent.is_fallback:
-        return response.query_result.fulfillment_text
+from bot import detect_intent_texts
 
 
 def send_message(event, vk_api):
