@@ -9,7 +9,7 @@ import vk_api as vk
 from dotenv import load_dotenv
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from bot import detect_intent_texts
+from tg_bot import detect_intent_texts
 from logger import TelegramLogsHandler
 
 
